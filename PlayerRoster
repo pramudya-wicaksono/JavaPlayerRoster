@@ -1,0 +1,112 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class PlayerRoster {
+    static Scanner scnr = new Scanner(System.in);
+
+    public static void playerInput(ArrayList<Integer> jerseyList, ArrayList<Integer> ratingList) {
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Enter player " + (i + 1) + "'s jersey number:");
+            int numJersey = scnr.nextInt();
+            System.out.println("Enter player " + (i + 1) + "'s rating:");
+            int numRating = scnr.nextInt();
+            System.out.println();
+            if (numJersey > -1 && numJersey < 100 && numRating > 0 && numRating < 10) {
+                jerseyList.add(numJersey);
+                ratingList.add(numRating);
+            }
+        }
+        System.out.println("ROSTER");
+        for (int count = 0; count < jerseyList.size(); count++) {
+            System.out.println("Player " + (count + 1) + " -- Jersey number: " + jerseyList.get(count) + ", Rating: " + ratingList.get(count));
+        }
+        System.out.println();
+    }
+
+    public static String menu() {
+    System.out.println("MENU");
+    System.out.println("u - Update player rating");
+    System.out.println("a - Print players above a rating");
+    System.out.println("r - Replace player");
+    System.out.println("p - Print roster");
+    System.out.println("q - Quit");
+    System.out.println();
+    System.out.println("Choose an option:");
+    String option = "";
+    option = scnr.next().trim();
+
+    return option;
+}
+
+
+
+    public static void updatePlayerRating(ArrayList<Integer> jerseyList, ArrayList<Integer> ratingList, Scanner scnr) {
+        System.out.println("Enter a jersey number:");
+        int jerseyNumber = scnr.nextInt();
+
+        int index = jerseyList.indexOf(jerseyNumber);
+        if (index != -1) {
+            System.out.println("Enter a new rating for player:");
+            int newRating = scnr.nextInt();
+
+            ratingList.set(index, newRating);
+            System.out.println("Player rating updated successfully.");
+        } else {
+            System.out.println("Player with jersey number " + jerseyNumber + " not found.");
+        }
+    }
+
+    public static void aboveRating(ArrayList<Integer> jerseyList, ArrayList<Integer> ratingList, Scanner scnr) {
+        System.out.println("Enter a rating:");
+        int rating = scnr.nextInt();
+        System.out.println("ABOVE " + rating);
+        for (int i = 0; i < ratingList.size(); i++) {
+            if (ratingList.get(i) > rating) {
+                System.out.println("Player " + (i + 1) + " -- Jersey number: " + jerseyList.get(i) + ", Rating: " + ratingList.get(i));
+            }
+        }
+        System.out.println();
+    }
+
+    public static void replace(ArrayList<Integer> jerseyList, ArrayList<Integer> ratingList, Scanner scnr) {
+        System.out.println("Enter a jersey number:");
+        int oldJersey = scnr.nextInt();
+        int index = jerseyList.indexOf(oldJersey);
+        if (index != -1) {
+            System.out.println("Enter a new jersey number:");
+            int newJersey = scnr.nextInt();
+            System.out.println("Enter a rating for new player:");
+            int newRating = scnr.nextInt();
+            ratingList.set(index, newRating);
+            jerseyList.set(index, newJersey);
+        } else {
+            System.out.println("Player with jersey number " + oldJersey + " not found.");
+        }
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Integer> jerseyList = new ArrayList<>();
+        ArrayList<Integer> ratingList = new ArrayList<>();
+
+        playerInput(jerseyList, ratingList);
+        boolean quit = false;
+        while (!quit) {
+            String menuInput = menu();
+            if (menuInput.toLowerCase().equals("u")) {
+                updatePlayerRating(jerseyList, ratingList, scnr);
+            } else if (menuInput.toLowerCase().equals("a")) {
+                aboveRating(jerseyList, ratingList, scnr);
+            } else if (menuInput.toLowerCase().equals("r")) {
+                replace(jerseyList, ratingList, scnr);
+            } else if (menuInput.toLowerCase().equals("p")) {
+                System.out.println("ROSTER");
+                for (int count = 0; count < jerseyList.size(); count++) {
+                    System.out.println("Player " + (count + 1) + " -- Jersey number: " + jerseyList.get(count) + ", Rating: " + ratingList.get(count));
+                }
+                System.out.println();
+            } else if (menuInput.toLowerCase().equals("q")) {
+                quit = true;
+            }
+        }
+    }
+}
